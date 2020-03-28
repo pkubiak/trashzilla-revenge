@@ -10,6 +10,7 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
         map = new L.Map('map', { center: new L.LatLng(51.505, -0.04), zoom: 13 }),
         drawnItems = L.featureGroup().addTo(map);
+
 L.control.layers({
     'osm': osm.addTo(map),
     // "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
@@ -64,29 +65,48 @@ map.on(L.Draw.Event.CREATED, function (event) {
     drawnItems.addLayer(layer);
 });
 
-
-function load_json() {
-    let text =JSON.parse(document.querySelector('#export').value);
-    console.log(text);
+function clear_layers() {
+    drawnItems.eachLayer((layer) => {
+        if(layer.editing && (layer.editing._marker || layer.editing._poly))
+            drawnItems.removeLayer(layer);
+    })
 }
 
+function load_json() {
+    clear_layers();
+    let data = JSON.parse(document.querySelector('#export').value);
+    // TODO: clear map
+    
+    // Create nodes
+    for(let node of data.nodes) {
+        let marker = L.marker(node.coord).addTo(drawnItems);
+    }
+
+    // Create roads
+    for(let road of data.roads) {
+        var polyline = L.polyline(road.coords, {color: ROAD_TYPES[road.type], weight: 8, opacity:1}).addTo(drawnItems);
+    }
+}
+function round(x) {
+    return Number(x.toFixed(5));
+}
 function save_json() {
     let data = {nodes: [], roads: []}
-    map.eachLayer((layer) => {
+    drawnItems.eachLayer((layer) => {
         if(layer.editing) {            
             if(layer.editing._marker) {
-                // console.log('Marker: ', layer._latlng);
-                data.nodes.push({lat: layer._latlng.lat, lng: layer._latlng.lng});
+                data.nodes.push({
+                    coord: [round(layer._latlng.lat), round(layer._latlng.lng)]
+                });
             } else
             if(layer.editing._poly) {
                 let color = layer.options.color, road_type;
                 for(let key in ROAD_TYPES)
                     if(color == ROAD_TYPES[key])
                         road_type = key;
-                // console.log('PolyLine', layer._latlngs, road_type);
                 data.roads.push({
                     type: road_type,
-                    points: layer._latlngs.map((x) => {return {lat: x.lat, lng: x.lng}})
+                    coords: layer._latlngs.map((x) => [round(x.lat), round(x.lng)])
                 });
             }
         }
