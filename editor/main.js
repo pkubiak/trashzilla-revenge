@@ -86,6 +86,8 @@ function load_json() {
     for(let road of data.roads) {
         var polyline = L.polyline(road.coords, {color: ROAD_TYPES[road.type], weight: 8, opacity:1}).addTo(drawnItems);
     }
+
+    map.fitBounds(drawnItems.getBounds());
 }
 function round(x) {
     return Number(x.toFixed(5));
