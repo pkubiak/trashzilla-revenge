@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body onload="on_init()">
+
+<div id="view-main" class="container-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <img src="/gfx/trashzilla.png" width="30" height="30" class="d-inline-block align-top mr-3" alt="">
+        <a class="navbar-brand" href="#">Trashzilla Revenge</a>
+    </nav>
+
+    <div class="d-flex my-3">
+        <select id="maps_list" class="form-control" style="flex:1"></select>
+        <button class="btn btn-primary ml-2" style="flex-grow: 0; flex-shrink: 0" onclick="create_game()">Create Game</button>
+    </div>
+
+    <table id="games_list" class="table table-striped"></table>
+</div>
+
+</body>
+</html>
