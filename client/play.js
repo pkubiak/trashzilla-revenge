@@ -11,6 +11,10 @@ function on_init() {
             document.querySelector('#playerId').innerText = pid;
 
             console.log('gid: ', gid, 'pid: ', pid);
+            socket.emit('join_game', {gid: gid, pid: pid}, (resp) => {
+                console.log(resp);
+                document.querySelector('#playerRole').innerText = resp.role;
+            });
         } else {
             gid = hash;
             socket.emit('join_game', {gid: gid}, (resp) => {

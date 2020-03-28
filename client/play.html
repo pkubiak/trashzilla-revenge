@@ -7,8 +7,15 @@
 </head>
 
 <body onload="on_init()">
-<div>GameId: <span id="gameId"></span></div>
-<div>PlayerId: <span id="playerId"></span></div>
-
+    <div id="board">
+        <div id="topRow">
+            <div id="map"></div>
+            <div id="sidebar">
+                <div>GameId: <span id="gameId"></span></div>
+                <div>PlayerId: <span id="playerId"></span> (role: <span id="playerRole"></span>)</div>
+            </div>
+        </div>
+        <div id="bottomRow">x</div>
+    </div>
 </body>
 </html>
